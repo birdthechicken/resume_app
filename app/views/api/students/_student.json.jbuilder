@@ -4,7 +4,7 @@ json.last_name student.last_name
 json.email student.email
 json.phone_number student.phone_number
 json.short_bio student.short_bio
-json.linkedIn_url student.linkedIn_url
+json.linked_in_url student.linked_in_url
 json.twitter_handle student.twitter_handle
 json.personal_blog student.personal_blog
 json.website_url student.website_url

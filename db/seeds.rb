@@ -20,7 +20,7 @@
 
 
 
-test_student_10 = Student.create(first_name: "John", last_name: "Moose", email: "test@dot.com", phone_number: "773-555-5555", short_bio: "too short", linkedIn_url: "www.linkedin.com/johnmoose", twitter_handle: "twitter/johnmoose", personal_blog: "it is personal", website_url: "www.johnmoose.com", resume_url: "resume.com", github_url: "github/something", photo: "https://images.unsplash.com/photo-1516934024742-b461fba47600?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80")
+test_student_10 = Student.create(first_name: "John", last_name: "Moose", email: "test@dot.com", phone_number: "773-555-5555", short_bio: "too short", linked_in_url: "www.linkedin.com/johnmoose", twitter_handle: "twitter/johnmoose", personal_blog: "it is personal", website_url: "www.johnmoose.com", resume_url: "resume.com", github_url: "github/something", photo: "https://images.unsplash.com/photo-1516934024742-b461fba47600?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80")
 
 test_skill = Skill.create(student_id: test_student_10.id, skill_name: "so skill")
 test_skill = Skill.create(student_id: test_student_10.id, skill_name: "karate")
