@@ -2,7 +2,8 @@ class Api::CapstonesController < ApplicationController
    before_action :authenticate_user, only: [:create, :update, :destroy]
 
    def index
-    @capstones = Capstone.all
+    # @capstones = Capstone.all
+    @capstones = current_user.capstones
     render 'index.json.jbuilder'
   end
 
@@ -15,7 +16,7 @@ class Api::CapstonesController < ApplicationController
                               screenshot: params[:screenshot]
                             )
 
-    if capstone.save
+    if @capstone.save
       render 'show.json.jbuilder'
     else
       render json: {message: @capstone.errors.full_messages }
@@ -29,22 +30,29 @@ class Api::CapstonesController < ApplicationController
 
   def update
     @capstone = Capstone.find(params[:id])
+    if current_user.id == @capstone.student_id 
+      @capstone.name = params[:name] || @capstone.name
+      @capstone.description = params[:description] || @capstone.description
+      @capstone.url = params[:url] || @capstone.url
+      @capstone.screenshot = params[:screenshot] || @capstone.screenshot
 
-    @capstone.name = params[:name] || @capstone.name
-    @capstone.description = params[:description] || @capstone.description
-    @capstone.url = params[:url] || @capstone.url
-    @capstone.screenshot = params[:screenshot] || @capstone.screenshot
-
-    if @capstone.save 
-      render 'show.json.jbuilder' 
-    else 
-      render json: {message: @capstone.errors.full_messages}, status: :unprocessable_entity
-    end 
+      if @capstone.save 
+        render 'show.json.jbuilder' 
+      else 
+        render json: {message: @capstone.errors.full_messages}, status: :unprocessable_entity
+      end 
+    else
+      render json: []
+    end
   end
 
   def destroy
     @capstone = Capstone.find(params[:id])
-    @capstone.destroy
-    render json: {message: "Successfully deleted"}
+    if current_user.id == @capstone.student_id 
+      @capstone.destroy
+      render json: {message: "Successfully deleted"}
+    else
+      render json: []
+    end
   end
 end

@@ -3,7 +3,9 @@ class Api::SkillsController < ApplicationController
 
 
    def index
-    @skills = Skill.all
+    # @skills = Skill.all
+    @skills = current_user.skills
+
     render 'index.json.jbuilder'
   end
 
@@ -13,7 +15,7 @@ class Api::SkillsController < ApplicationController
                               skill_name: params[:skill_name]
                             )
 
-    if skill.save
+    if @skill.save
       render 'show.json.jbuilder'
     else
       render json: {message: @skill.errors.full_messages }
@@ -27,19 +29,26 @@ class Api::SkillsController < ApplicationController
 
   def update
     @skill = Skill.find(params[:id])
+    if current_user.id == @skill.student_id 
+      @skill.skill_name = params[:skill_name] || @skill.skill_name
 
-    @skill.skill_name = params[:skill_name] || @skill.skill_name
-
-    if @skill.save 
-    render 'show.json.jbuilder' 
-    else 
-      render json: {message: @skill.errors.full_messages}, status: :unprocessable_entity
-    end 
+      if @skill.save 
+      render 'show.json.jbuilder' 
+      else 
+        render json: {message: @skill.errors.full_messages}, status: :unprocessable_entity
+      end 
+    else
+      render json: []
+    end
   end
 
   def destroy
     @skill = Skill.find(params[:id])
-    @skill.destroy
-    render json: {message: "Successfully deleted"}
+    if current_user.id == @skill.student_id 
+      @skill.destroy
+      render json: {message: "Successfully deleted"}
+    else
+      render json: [] 
+    end
   end
 end

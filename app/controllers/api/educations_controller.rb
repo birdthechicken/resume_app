@@ -3,8 +3,8 @@ class Api::EducationsController < ApplicationController
 
 
    def index
-    @educations = Education.all
-    # @educations = current_user.educations
+    # @educations = Education.all
+    @educations = current_user.educations
 
     render 'index.json.jbuilder'
   end
@@ -19,7 +19,7 @@ class Api::EducationsController < ApplicationController
                                 details: params[:details]
                               )
 
-      if education.save
+      if @education.save
         render 'show.json.jbuilder'
       else
         render json: {message: @education.errors.full_messages }
@@ -33,24 +33,30 @@ class Api::EducationsController < ApplicationController
 
   def update
     @education = Education.find(params[:id])
-    # @education = current_user.educations.find(params[:id])
+    if current_user.id == @education.student_id 
+      @education.start_date = params[:start_date] || @education.start_date
+      @education.end_date = params[:end_date] || @education.end_date
+      @education.degree = params[:degree] || @education.degree
+      @education.schooling = params[:schooling] || @education.schooling
+      @education.details = params[:details] || @education.details
 
-    @education.start_date = params[:start_date] || @education.start_date
-    @education.end_date = params[:end_date] || @education.end_date
-    @education.degree = params[:degree] || @education.degree
-    @education.schooling = params[:schooling] || @education.schooling
-    @education.details = params[:details] || @education.details
-
-    if @education.save 
-    render 'show.json.jbuilder' 
-    else 
-      render json: {message: @education.errors.full_messages}, status: :unprocessable_entity
-    end 
+      if @education.save 
+      render 'show.json.jbuilder' 
+      else 
+        render json: {message: @education.errors.full_messages}, status: :unprocessable_entity
+      end 
+    else
+      render json: []
+    end
   end
 
   def destroy
     @education = Education.find(params[:id])
-    @education.destroy
-    render json: {message: "Successfully deleted"}
+    if current_user.id == @experience.student_id 
+      @education.destroy
+      render json: {message: "Successfully deleted"}
+    else
+      render json: []
+    end
   end
 end

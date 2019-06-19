@@ -23,8 +23,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
   def authenticate_user
-    p "help..............................................................."
-    p current_user
     unless current_user
       render json: {}, status: :unauthorized
     end
