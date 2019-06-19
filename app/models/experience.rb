@@ -1,10 +1,9 @@
 class Experience < ApplicationRecord
   belongs_to :student
-  # validates :student_id,
-  # validates :start_date, presence: true
-  # validates :end_date, presence: true
-  # validates :job_title, presence: true
-  # validates :company_name, presence:true
+
+  validates :start_date, presence: true
+  validates :end_date, presence: true
+
 
   def formatted_start_date
     start_date.strftime("%B %e, %Y").gsub("  ", " ")  
