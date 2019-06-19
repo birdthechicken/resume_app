@@ -1,9 +1,11 @@
 class Api::EducationsController < ApplicationController
-  before_action :authenticate_user, only: [:create, :update, :destroy]
+  # before_action :authenticate_user, only: [:create, :update, :destroy]
 
 
    def index
     @educations = Education.all
+    # @educations = current_user.educations
+
     render 'index.json.jbuilder'
   end
 
@@ -34,8 +36,9 @@ class Api::EducationsController < ApplicationController
   end
 
   def update
-    if current_user
+    # if current_user
       @education = Education.find(params[:id])
+      # @education = current_user.educations.find(params[:id])
 
       @education.start_date = params[:start_date] || @education.start_date
       @education.end_date = params[:end_date] || @education.end_date
@@ -48,9 +51,9 @@ class Api::EducationsController < ApplicationController
       else 
         render json: {message: @education.errors.full_messages}, status: :unprocessable_entity
       end 
-    else
-      render json:[]
-    end
+    # else
+    #   render json:[]
+    # end
   end
 
   def destroy
